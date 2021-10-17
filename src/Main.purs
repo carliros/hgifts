@@ -3,8 +3,12 @@ module Main where
 import Prelude
 
 import Effect (Effect)
-import Effect.Console (log)
+import Halogen.Aff (runHalogenAff, awaitBody)
+import Halogen.VDom.Driver (runUI)
+
+import Counter (counterComponent)
 
 main :: Effect Unit
-main = do
-  log "🍝"
+main = runHalogenAff do
+  body <- awaitBody
+  runUI counterComponent unit body
