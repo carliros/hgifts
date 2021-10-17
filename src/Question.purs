@@ -9,17 +9,11 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Type.Proxy (Proxy(..))
-import Types (QuestionOption)
+import Types (QuestionInput)
 
-type Slots = ( question :: forall query. Slot query Void Unit )
 _question = Proxy :: Proxy "question"
 
 data QuestionAction = Receive QuestionInput
-type QuestionInput = {
-    number :: Int,
-    question :: String,
-    answer :: Maybe Int
- }
 type QuestionState = {
     number :: Int,
     question :: String,

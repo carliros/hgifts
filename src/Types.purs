@@ -1,4 +1,5 @@
 module Types where
+import Data.Maybe(Maybe)
 
 data QuestionOption 
     = VERY_LITTLE
@@ -6,3 +7,9 @@ data QuestionOption
     | REGULAR
     | A_LOT
     | VERY_MANY
+
+type QuestionInput = {
+    number :: Int,
+    question :: String,
+    answer :: Maybe Int
+ }
