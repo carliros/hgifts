@@ -13,7 +13,6 @@ import Halogen.HTML.Properties as HP
 import Intro (_intro, intro)
 import Question (_question, question)
 import Types (QuestionInput)
-import Web.HTML.Event.EventTypes (offline)
 
 type AppSlots = (
       question :: forall query. Slot query Void Unit
