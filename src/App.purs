@@ -2,20 +2,22 @@ module App where
 
 import Prelude
 
-import Data.Array (index, length)
+import Data.Array (index, length, mapWithIndex)
 import Data.Maybe (Maybe(..), fromJust)
 import Effect.Aff as Aff
 import Effect.Aff.Class (class MonadAff)
+import Effect.Class (class MonadEffect)
+import Effect.Class.Console (logShow)
 import Halogen (Component, ComponentHTML, HalogenM, Slot, mkEval, mkComponent, defaultEval, modify_)
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Intro (_intro, intro)
-import Question (_question, question)
+import Question (QuestionOutput(..), _question, question)
 import Types (QuestionInput)
 
 type AppSlots = (
-      question :: forall query. Slot query Void Unit
+      question :: forall query. Slot query QuestionOutput Unit
     , intro :: forall query. Slot query Void Unit
     )
 
@@ -24,9 +26,12 @@ type AppState = {
     , questions :: Array QuestionInput
     , name :: String
     }
-data AppAction = Next | Previous
+data AppAction 
+    = Next
+    | Previous
+    | HandleSelectedOption QuestionOutput
 
-app :: forall query input output m. MonadAff m => Component query input output m
+app :: forall query input output m. MonadEffect m => Component query input output m
 app =
   mkComponent
     { initialState
@@ -54,7 +59,7 @@ app =
                         else if page >= 1 && page <= length questions
                                 then let maybeQuestionInput = index questions (page - 1)
                                      in case maybeQuestionInput of
-                                            Just questionInput -> HH.div_ [ HH.slot_ _question unit question questionInput ]
+                                            Just questionInput -> HH.div_ [ HH.slot _question unit question questionInput HandleSelectedOption ]
                                             Nothing -> HH.text "Error"
                                 else HH.text "END PAGE"
     in HH.div_ [
@@ -64,9 +69,14 @@ app =
         , HH.div [] [
               HH.button [ HE.onClick \_ -> Previous, HP.disabled (page == 0)] [ HH.text "Anterior" ]
             , HH.button [ HE.onClick \_ -> Next, HP.disabled (page == (2 + length questions)) ] [ HH.text "Siguiente" ]]
+        , HH.p_ [HH.text $ show questions]
         ]
 
   handleAction :: AppAction -> HalogenM AppState AppAction AppSlots output m Unit
   handleAction = case _ of
     Next -> modify_ \st -> st { page = st.page + 1 }
     Previous -> modify_ \st -> st { page = st.page - 1 }
+    HandleSelectedOption (SelectedOption nro value) -> do
+        logShow $ "got " <> show nro <> " " <> show value
+        modify_ \st -> let newQuestions = mapWithIndex (\_ q -> if nro == q.number then q {answer = Just value} else q) st.questions
+                       in st { questions = newQuestions, page = st.page + 1 }
