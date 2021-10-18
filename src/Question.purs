@@ -22,7 +22,8 @@ data QuestionAction = Receive QuestionInput
 type QuestionState = {
     number :: Int,
     question :: String,
-    answer :: Maybe Int
+    answer :: Maybe Int,
+    gift :: String
 }
 
 --button :: forall query output m. H.Component query ButtonInput output m
@@ -65,6 +66,7 @@ question =
             modify_ _ { number = input.number
                       , question = input.question
                       , answer = input.answer
+                      , gift = input.gift
                       }
         SelectOption number value ->
             do logShow $ "click " <> show value

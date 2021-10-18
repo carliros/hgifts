@@ -18,6 +18,7 @@ to generate this file without the comments in this block.
   , "effect"
   , "halogen"
   , "maybe"
+  , "orders"
   , "prelude"
   , "psci-support"
   ]

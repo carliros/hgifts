@@ -11,5 +11,6 @@ data QuestionOption
 type QuestionInput = {
     number :: Int,
     question :: String,
-    answer :: Maybe Int
+    answer :: Maybe Int,
+    gift :: String
  }
