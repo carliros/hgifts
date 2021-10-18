@@ -2,8 +2,9 @@ module Results where
 
 import Prelude
 
-import Data.Array (groupAllBy, index, length, mapWithIndex)
-import Data.Maybe (Maybe(..), maybe)
+import Data.Array (groupAllBy, index, length, foldr, head, mapWithIndex)
+import Data.Array.NonEmpty (toArray)
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Ord.Down (Down)
 import Effect.Aff.Class (class MonadAff)
 import Halogen (Component, ComponentHTML, HalogenM, Slot, mkEval, mkComponent, defaultEval, modify_)
@@ -43,12 +44,24 @@ results =
 
     compareQuestions q1 q2 = compare q1.gift q2.gift
 
+    getValue q = case q.answer of
+                    Just v -> v
+                    Nothing -> 0
+
+    convert2Gift i list = let ll = toArray list
+                              amount = foldr (\qq acc -> (getValue qq) + acc) 0 ll
+                              gift = case head ll of
+                                        Just q -> q.gift
+                                        Nothing -> ""
+                          in { amount: amount, gift: gift}
+    
     render :: ResultsState -> ComponentHTML ResultsAction () m
     render { name, questions, page } =
         let groups = groupAllBy (compareQuestions) questions
+            gifts = mapWithIndex convert2Gift groups
         in HH.div_
             [ HH.h3_ [ HH.text "Resultados" ]
-            , HH.p_ [ HH.text $ show groups]
+            , HH.p_ [ HH.text $ show gifts]
             ]
 
     handleAction :: ResultsAction -> HalogenM ResultsState ResultsAction () output m Unit
