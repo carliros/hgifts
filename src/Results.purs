@@ -2,7 +2,7 @@ module Results where
 
 import Prelude
 
-import Data.Array (groupAllBy, index, length, foldr, head, mapWithIndex)
+import Data.Array (groupAllBy, index, length, foldr, head, mapWithIndex, sortWith)
 import Data.Array.NonEmpty (toArray)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Ord.Down (Down)
@@ -55,9 +55,10 @@ results =
     render { name, questions, page } =
         let groups = groupAllBy (compareQuestions) questions
             gifts = mapWithIndex convert2Gift groups
+            sorted = sortWith (_.amount) gifts
         in HH.div_
             [ HH.h3_ [ HH.text "Resultados" ]
-            , HH.p_ [ HH.text $ show gifts]
+            , HH.p_ [ HH.text $ show sorted]
             ]
 
     handleAction :: ResultsAction -> HalogenM ResultsState ResultsAction () output m Unit
