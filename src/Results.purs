@@ -44,13 +44,9 @@ results =
 
     compareQuestions q1 q2 = compare q1.gift q2.gift
 
-    getValue q = case q.answer of
-                    Just v -> v
-                    Nothing -> 0
-
-    convert2Gift i list = let ll = toArray list
-                              amount = foldr (\qq acc -> (getValue qq) + acc) 0 ll
-                              gift = case head ll of
+    convert2Gift i list = let array = toArray list
+                              amount = foldr (\qq acc -> (fromMaybe 0 qq.answer) + acc) 0 array
+                              gift = case head array of
                                         Just q -> q.gift
                                         Nothing -> ""
                           in { amount: amount, gift: gift}
