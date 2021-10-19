@@ -128,8 +128,8 @@ app =
                                             Just questionInput -> HH.div_ [ HH.slot _question page question questionInput HandleSelectedOption ]
                                             Nothing -> HH.text "Error"
                                 else HH.div_ [ HH.slot_ _results unit results { name: name, questions: questions, page: page }]
-    in HH.div_ [
-          HH.h2 [] [HH.text "Test de dones espirituales"]
+    in HH.div [HP.classes [ HH.ClassName "flex-column", HH.ClassName "justify-center", HH.ClassName "h-screen" ] ] [
+          HH.h2 [HP.classes [ HH.ClassName "text-2xl" ]] [HH.text "Test de dones espirituales"]
         , bodyContent
         , HH.br_
         , HH.div [] [
@@ -144,3 +144,15 @@ app =
     HandleSelectedOption (SelectedOption nro value) -> do
         modify_ \st -> let newQuestions = mapWithIndex (\_ q -> if nro == q.number then q {answer = Just value} else q) st.questions
                        in st { questions = newQuestions, page = st.page + 1 }
+
+{-
+<div class="flex-column justify-center items-center h-screen">
+      <div class="p-20 text-center">
+        <h1 class="text-9xl">tailwindcss 2.0</h1>
+        <div class="bg-green-200 hover:bg-green-500 p-10 text-4xl">Is now live on server !!</div>
+        <div class="p-5 text-2xl">
+          <a href="#" class="text-blue-500 hover:text-purple-700">How to set up this tailwind CSS 2.0 ?</a>
+        </div>
+      </div>
+    </div>
+-}
