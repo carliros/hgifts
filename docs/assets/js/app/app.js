@@ -5402,28 +5402,22 @@ var PS = {};
       return SelectOption;
   })();
   var question = function (dictMonadEffect) {
+      var radioBtn = function (nro) {
+          return function (ans) {
+              return function (value) {
+                  return function (label) {
+                      var name = "op" + Data_Show.show(Data_Show.showInt)(value);
+                      return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.input([ Halogen_HTML_Properties.id(name), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.name("options"), Halogen_HTML_Properties.value(Data_Show.show(Data_Show.showInt)(value)), Halogen_HTML_Events.onChecked(function (v) {
+                          return new SelectOption(nro, value);
+                      }), Halogen_HTML_Properties.checked(Data_Maybe.maybe(false)(function (v) {
+                          return v === value;
+                      })(ans)) ]), Halogen_HTML_Elements.label([ Halogen_HTML_Properties["for"](name) ])([ Halogen_HTML_Core.text(label) ]) ]);
+                  };
+              };
+          };
+      };
       var render = function (v) {
-          return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.span([  ])([ Halogen_HTML_Core.text(Data_Show.show(Data_Show.showInt)(v.number) + ". ") ]), Halogen_HTML_Elements.span([  ])([ Halogen_HTML_Core.text(v.question) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.input([ Halogen_HTML_Properties.id("op1"), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.name("options"), Halogen_HTML_Properties.value("1"), Halogen_HTML_Events.onChecked(function (v1) {
-              return new SelectOption(v.number, 1);
-          }), Halogen_HTML_Properties.checked(Data_Maybe.maybe(false)(function (v1) {
-              return v1 === 1;
-          })(v.answer)) ]), Halogen_HTML_Elements.label([ Halogen_HTML_Properties["for"]("op1") ])([ Halogen_HTML_Core.text("POCO") ]), Halogen_HTML_Elements.input([ Halogen_HTML_Properties.id("op2"), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.name("options"), Halogen_HTML_Properties.value("2"), Halogen_HTML_Events.onChecked(function (v1) {
-              return new SelectOption(v.number, 2);
-          }), Halogen_HTML_Properties.checked(Data_Maybe.maybe(false)(function (v1) {
-              return v1 === 2;
-          })(v.answer)) ]), Halogen_HTML_Elements.label([ Halogen_HTML_Properties["for"]("op2") ])([ Halogen_HTML_Core.text("MUY POCO") ]), Halogen_HTML_Elements.input([ Halogen_HTML_Properties.id("op3"), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.name("options"), Halogen_HTML_Properties.value("3"), Halogen_HTML_Events.onChecked(function (v1) {
-              return new SelectOption(v.number, 3);
-          }), Halogen_HTML_Properties.checked(Data_Maybe.maybe(false)(function (v1) {
-              return v1 === 3;
-          })(v.answer)) ]), Halogen_HTML_Elements.label([ Halogen_HTML_Properties["for"]("op3") ])([ Halogen_HTML_Core.text("REGULAR") ]), Halogen_HTML_Elements.input([ Halogen_HTML_Properties.id("op4"), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.name("options"), Halogen_HTML_Properties.value("4"), Halogen_HTML_Events.onChecked(function (v1) {
-              return new SelectOption(v.number, 4);
-          }), Halogen_HTML_Properties.checked(Data_Maybe.maybe(false)(function (v1) {
-              return v1 === 4;
-          })(v.answer)) ]), Halogen_HTML_Elements.label([ Halogen_HTML_Properties["for"]("op4") ])([ Halogen_HTML_Core.text("MUCHO") ]), Halogen_HTML_Elements.input([ Halogen_HTML_Properties.id("op5"), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropInputType)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.name("options"), Halogen_HTML_Properties.value("5"), Halogen_HTML_Events.onChecked(function (v1) {
-              return new SelectOption(v.number, 5);
-          }), Halogen_HTML_Properties.checked(Data_Maybe.maybe(false)(function (v1) {
-              return v1 === 5;
-          })(v.answer)) ]), Halogen_HTML_Elements.label([ Halogen_HTML_Properties["for"]("op5") ])([ Halogen_HTML_Core.text("MUCH\xcdSIMO") ]) ]) ]);
+          return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes([ "text-black" ]) ])([ Halogen_HTML_Core.text(Data_Show.show(Data_Show.showInt)(v.number) + ". ") ]), Halogen_HTML_Elements.span([  ])([ Halogen_HTML_Core.text(v.question) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "p-5" ]) ])([ radioBtn(v.number)(v.answer)(1)("POCO"), radioBtn(v.number)(v.answer)(2)("MUY POCO"), radioBtn(v.number)(v.answer)(3)("REGULAR"), radioBtn(v.number)(v.answer)(4)("MUCHO"), radioBtn(v.number)(v.answer)(4)("MUCH\xcdSIMO") ]) ]);
       };
       var initialState = function (question1) {
           return question1;
@@ -5431,17 +5425,17 @@ var PS = {};
       var handleAction = function (v) {
           if (v instanceof Receive) {
               return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                  var $15 = {};
-                  for (var $16 in v1) {
-                      if ({}.hasOwnProperty.call(v1, $16)) {
-                          $15[$16] = v1[$16];
+                  var $11 = {};
+                  for (var $12 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $12)) {
+                          $11[$12] = v1[$12];
                       };
                   };
-                  $15.number = v.value0.number;
-                  $15.question = v.value0.question;
-                  $15.answer = v.value0.answer;
-                  $15.gift = v.value0.gift;
-                  return $15;
+                  $11.number = v.value0.number;
+                  $11.question = v.value0.question;
+                  $11.answer = v.value0.answer;
+                  $11.gift = v.value0.gift;
+                  return $11;
               });
           };
           if (v instanceof SelectOption) {
@@ -5449,7 +5443,7 @@ var PS = {};
                   return Halogen_Query_HalogenM.raise(new SelectedOption(v.value0, v.value1));
               });
           };
-          throw new Error("Failed pattern match at Question (line 64, column 20 - line 73, column 51): " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Question (line 65, column 20 - line 74, column 51): " + [ v.constructor.name ]);
       };
       return Halogen_Component.mkComponent({
           initialState: initialState,
@@ -5457,8 +5451,8 @@ var PS = {};
           "eval": Halogen_Component.mkEval({
               handleAction: handleAction,
               handleQuery: Halogen_Component.defaultEval.handleQuery,
-              receive: function ($21) {
-                  return Data_Maybe.Just.create(Receive.create($21));
+              receive: function ($17) {
+                  return Data_Maybe.Just.create(Receive.create($17));
               },
               initialize: Halogen_Component.defaultEval.initialize,
               finalize: Halogen_Component.defaultEval.finalize
@@ -5581,6 +5575,7 @@ var PS = {};
   exports["results"] = results;
 })(PS);
 (function($PS) {
+  // Generated by purs version 0.14.3
   "use strict";
   $PS["App"] = $PS["App"] || {};
   var exports = $PS["App"];
@@ -5956,10 +5951,11 @@ var PS = {};
   } ];
   var app = function (dictMonadEffect) {
       var render = function (v) {
+          var divProps = [ Halogen_HTML_Properties.classes([ "text-gray-500" ]) ];
           var bodyContent = (function () {
               var $13 = v.page === 0;
               if ($13) {
-                  return Halogen_HTML_Elements.div_([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
+                  return Halogen_HTML_Elements.div(divProps)([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
                       return "intro";
                   }))(Data_Ord.ordUnit)(Intro["_intro"])(Data_Unit.unit)(Intro.intro)({
                       name: v.name
@@ -5969,16 +5965,16 @@ var PS = {};
               if ($14) {
                   var maybeQuestionInput = Data_Array.index(v.questions)(v.page - 1 | 0);
                   if (maybeQuestionInput instanceof Data_Maybe.Just) {
-                      return Halogen_HTML_Elements.div_([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+                      return Halogen_HTML_Elements.div(divProps)([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
                           return "question";
                       }))(Data_Ord.ordInt)(Question["_question"])(v.page)(Question.question(dictMonadEffect))(maybeQuestionInput.value0)(HandleSelectedOption.create) ]);
                   };
                   if (maybeQuestionInput instanceof Data_Maybe.Nothing) {
                       return Halogen_HTML_Core.text("Error");
                   };
-                  throw new Error("Failed pattern match at App (line 127, column 41 - line 129, column 71): " + [ maybeQuestionInput.constructor.name ]);
+                  throw new Error("Failed pattern match at App (line 128, column 41 - line 130, column 71): " + [ maybeQuestionInput.constructor.name ]);
               };
-              return Halogen_HTML_Elements.div_([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
+              return Halogen_HTML_Elements.div(divProps)([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
                   return "results";
               }))(Data_Ord.ordUnit)(Results["_results"])(Data_Unit.unit)(Results.results)({
                   name: v.name,
@@ -5986,9 +5982,9 @@ var PS = {};
                   page: v.page
               }) ]);
           })();
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "flex-column", "justify-center", "h-screen" ]) ])([ Halogen_HTML_Elements.h2([ Halogen_HTML_Properties.classes([ "text-2xl" ]) ])([ Halogen_HTML_Core.text("Test de dones espirituales") ]), bodyContent, Halogen_HTML_Elements.br_, Halogen_HTML_Elements.div([  ])([ Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(function (v1) {
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes([ "p-6", "flex-column", "justify-center", "items-center", "h-screen" ]) ])([ Halogen_HTML_Elements.h2([ Halogen_HTML_Properties.classes([ "text-xl", "font-medium", "text-black" ]) ])([ Halogen_HTML_Core.text("Test de dones espirituales") ]), bodyContent, Halogen_HTML_Elements.br_, Halogen_HTML_Elements.div([  ])([ Halogen_HTML_Elements.button([ Halogen_HTML_Properties.classes([ "btn-green" ]), Halogen_HTML_Events.onClick(function (v1) {
               return Previous.value;
-          }), Halogen_HTML_Properties.disabled(v.page === 0) ])([ Halogen_HTML_Core.text("Anterior") ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(function (v1) {
+          }), Halogen_HTML_Properties.disabled(v.page === 0) ])([ Halogen_HTML_Core.text("Anterior") ]), Halogen_HTML_Elements.button([ Halogen_HTML_Properties.classes([ "btn-green" ]), Halogen_HTML_Events.onClick(function (v1) {
               return Next.value;
           }), Halogen_HTML_Properties.disabled(v.page === (1 + Data_Array.length(v.questions) | 0)) ])([ Halogen_HTML_Core.text("Siguiente") ]) ]) ]);
       };
@@ -6053,7 +6049,7 @@ var PS = {};
                   return $31;
               });
           };
-          throw new Error("Failed pattern match at App (line 141, column 18 - line 146, column 78): " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at App (line 142, column 18 - line 147, column 78): " + [ v.constructor.name ]);
       };
       return Halogen_Component.mkComponent({
           initialState: initialState,

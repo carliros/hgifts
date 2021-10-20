@@ -120,21 +120,22 @@ app =
 
   render :: AppState -> ComponentHTML AppAction AppSlots m
   render { page, questions, name } =
-    let bodyContent = if page == 0
-                        then HH.div_ [ HH.slot_ _intro unit intro { name: name }]
+    let divProps = [ HP.classes [HH.ClassName "text-gray-500"] ]
+        bodyContent = if page == 0
+                        then HH.div divProps [ HH.slot_ _intro unit intro { name: name }]
                         else if page >= 1 && page <= length questions
                                 then let maybeQuestionInput = index questions (page - 1)
                                      in case maybeQuestionInput of
-                                            Just questionInput -> HH.div_ [ HH.slot _question page question questionInput HandleSelectedOption ]
+                                            Just questionInput -> HH.div divProps [ HH.slot _question page question questionInput HandleSelectedOption ]
                                             Nothing -> HH.text "Error"
-                                else HH.div_ [ HH.slot_ _results unit results { name: name, questions: questions, page: page }]
-    in HH.div [HP.classes [ HH.ClassName "flex-column", HH.ClassName "justify-center", HH.ClassName "h-screen" ] ] [
-          HH.h2 [HP.classes [ HH.ClassName "text-2xl" ]] [HH.text "Test de dones espirituales"]
+                                else HH.div divProps [ HH.slot_ _results unit results { name: name, questions: questions, page: page }]
+    in HH.div [HP.classes [ HH.ClassName "p-6", HH.ClassName "flex-column", HH.ClassName "justify-center", HH.ClassName "items-center", HH.ClassName "h-screen" ] ] [
+          HH.h2 [HP.classes [ HH.ClassName "text-xl", HH.ClassName "font-medium", HH.ClassName "text-black" ]] [HH.text "Test de dones espirituales"]
         , bodyContent
         , HH.br_
         , HH.div [] [
-              HH.button [ HE.onClick \_ -> Previous, HP.disabled (page == 0)] [ HH.text "Anterior" ]
-            , HH.button [ HE.onClick \_ -> Next, HP.disabled (page == (1 + length questions)) ] [ HH.text "Siguiente" ]]
+              HH.button [ HP.classes [HH.ClassName "btn-green"], HE.onClick \_ -> Previous, HP.disabled (page == 0)] [ HH.text "Anterior" ]
+            , HH.button [ HP.classes [HH.ClassName "btn-green"], HE.onClick \_ -> Next, HP.disabled (page == (1 + length questions)) ] [ HH.text "Siguiente" ]]
         ]
 
   handleAction :: AppAction -> HalogenM AppState AppAction AppSlots output m Unit
@@ -146,6 +147,10 @@ app =
                        in st { questions = newQuestions, page = st.page + 1 }
 
 {-
+
+<button class="px-4 py-1 text-sm font-semibold text-purple-600 border border-purple-200 rounded-full hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">Message</button>
+
+
 <div class="items-center justify-center h-screen flex-column">
       <div class="p-20 text-center">
         <h1 class="text-9xl">tailwindcss 2.0</h1>

@@ -26,8 +26,6 @@ type QuestionState = {
     gift :: String
 }
 
---button :: forall query output m. H.Component query ButtonInput output m
-
 question :: forall query input output m. MonadEffect m => Component query QuestionInput QuestionOutput m
 question =
   mkComponent
@@ -45,19 +43,22 @@ question =
     render :: QuestionState -> ComponentHTML QuestionAction () m
     render { number, question, answer } =
         HH.div_
-            [ HH.span [] [ HH.text $ show number <> ". "]
+            [ HH.span [HP.classes [HH.ClassName "text-black"]] [ HH.text $ show number <> ". "]
             , HH.span [] [HH.text question]
-            , HH.div_ [ HH.input [HP.id "op1", HP.type_ HP.InputRadio, HP.name "options", HP.value "1", HE.onChecked  \_ -> SelectOption number 1, HP.checked $ maybe false (\v -> v == 1) answer]
-                      , HH.label [HP.for "op1"] [HH.text "POCO"]
-                      , HH.input [HP.id "op2", HP.type_ HP.InputRadio, HP.name "options", HP.value "2", HE.onChecked  \_ -> SelectOption number 2, HP.checked $ maybe false (\v -> v == 2) answer]
-                      , HH.label [HP.for "op2"] [HH.text "MUY POCO"]
-                      , HH.input [HP.id "op3", HP.type_ HP.InputRadio, HP.name "options", HP.value "3", HE.onChecked  \_ -> SelectOption number 3, HP.checked $ maybe false (\v -> v == 3) answer]
-                      , HH.label [HP.for "op3"] [HH.text "REGULAR"]
-                      , HH.input [HP.id "op4", HP.type_ HP.InputRadio, HP.name "options", HP.value "4", HE.onChecked  \_ -> SelectOption number 4, HP.checked $ maybe false (\v -> v == 4) answer]
-                      , HH.label [HP.for "op4"] [HH.text "MUCHO"]
-                      , HH.input [HP.id "op5", HP.type_ HP.InputRadio, HP.name "options", HP.value "5", HE.onChecked  \_ -> SelectOption number 5, HP.checked $ maybe false (\v -> v == 5) answer]
-                      , HH.label [HP.for "op5"] [HH.text "MUCHÍSIMO"]
-                      ]
+            , HH.div [HP.classes [HH.ClassName "p-5"]]
+                [ radioBtn number answer 1 "POCO"
+                , radioBtn number answer 2 "MUY POCO"
+                , radioBtn number answer 3 "REGULAR"
+                , radioBtn number answer 4 "MUCHO"
+                , radioBtn number answer 4 "MUCHÍSIMO"
+                ]
+            ]
+
+    radioBtn nro ans value label = 
+        let name = "op" <> show value
+        in HH.div_ [
+              HH.input [HP.id name, HP.type_ HP.InputRadio, HP.name "options", HP.value (show value), HE.onChecked  \_ -> SelectOption nro value, HP.checked $ maybe false (\v -> v == value) ans]
+            , HH.label [HP.for name] [HH.text label]
             ]
 
     handleAction :: QuestionAction -> HalogenM QuestionState QuestionAction () QuestionOutput m Unit
