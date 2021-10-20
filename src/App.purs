@@ -146,10 +146,10 @@ app =
                        in st { questions = newQuestions, page = st.page + 1 }
 
 {-
-<div class="flex-column justify-center items-center h-screen">
+<div class="items-center justify-center h-screen flex-column">
       <div class="p-20 text-center">
         <h1 class="text-9xl">tailwindcss 2.0</h1>
-        <div class="bg-green-200 hover:bg-green-500 p-10 text-4xl">Is now live on server !!</div>
+        <div class="p-10 text-4xl bg-green-200 hover:bg-green-500">Is now live on server !!</div>
         <div class="p-5 text-2xl">
           <a href="#" class="text-blue-500 hover:text-purple-700">How to set up this tailwind CSS 2.0 ?</a>
         </div>
