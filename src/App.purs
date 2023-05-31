@@ -129,8 +129,8 @@ app =
                                             Just questionInput -> HH.div divProps [ HH.slot _question page question questionInput HandleSelectedOption ]
                                             Nothing -> HH.text "Error"
                                 else HH.div divProps [ HH.slot_ _results unit results { name: name, questions: questions, page: page }]
-    in HH.div [HP.classes [ HH.ClassName "p-6", HH.ClassName "flex-column", HH.ClassName "justify-center", HH.ClassName "items-center", HH.ClassName "h-screen" ] ] [
-          HH.h2 [HP.classes [ HH.ClassName "text-xl", HH.ClassName "font-medium", HH.ClassName "text-black" ]] [HH.text "Test de dones espirituales"]
+    in HH.div [HP.classes [ HH.ClassName "prose m-2 sm:m-4 md:m-8 lg:m-16 xl:m-32", HH.ClassName "p-6", HH.ClassName "flex-column", HH.ClassName "justify-center", HH.ClassName "items-center", HH.ClassName "h-screen" ] ] [
+          HH.h2_ [HH.text "Test de dones espirituales"]
         , bodyContent
         , HH.br_
         , HH.div [] [
